@@ -49,7 +49,7 @@ const User = mongoose.model('User', { email: String, password: String });
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email, password }, (err, user) => {
+  User.findOne({ email }, (err, user) => {
     if (err) {
       console.error('Error finding user in database:', err);
       return res.status(500).json({ error: 'Server error' });
