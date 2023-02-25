@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 require('dotenv').config();
-
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
@@ -55,6 +55,9 @@ app.post('/api/login', (req, res) => {
       return res.status(500).json({ error: 'Server error' });
     }
     if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    if (password !== user.password) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
